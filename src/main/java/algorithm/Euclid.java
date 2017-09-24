@@ -27,7 +27,7 @@ public class Euclid {
     public Euclid() {
     }
 
-    public void countEuclid(BigInteger number1, BigInteger number2) {
+    public Euclid countEuclid(BigInteger number1, BigInteger number2) {
         aList = new ArrayList<>();
         bList = new ArrayList<>();
         aModBList = new ArrayList<>();
@@ -69,6 +69,7 @@ public class Euclid {
         this.Y = yList.get(0);
        // bList.forEach(System.out::println);
         this.NOD = bList.get(bList.size()-1);
+        return this;
     }
 
     public List<BigInteger> getaList() {
