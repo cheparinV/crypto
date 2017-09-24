@@ -51,7 +51,7 @@ public class Euclid {
             bList.add(number2);
             aModB = number1.mod(number2);
             aDivB = number1.divide(number2);
-            System.out.println("mod = " + aModB + "; div = " + aDivB);
+         //   System.out.println("mod = " + aModB + "; div = " + aDivB);
             aModBList.add(aModB);
             aDivBList.add(aDivB);
         }
@@ -67,7 +67,7 @@ public class Euclid {
         }
         this.X = xList.get(0);
         this.Y = yList.get(0);
-        bList.forEach(System.out::println);
+       // bList.forEach(System.out::println);
         this.NOD = bList.get(bList.size()-1);
     }
 

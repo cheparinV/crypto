@@ -7,48 +7,73 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="359.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="359.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
     <children>
-      <TabPane prefHeight="359.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="algorithm.Euclid">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="210.0" prefWidth="310.0">
-                  <children>
-                      <Label layoutX="24.0" layoutY="6.0" text="A" />
-                      <Label layoutX="25.0" layoutY="48.0" text="B" />
-                      <Label layoutX="25.0" layoutY="97.0" text="НОД(А,В)" />
-                      <Label layoutX="28.0" layoutY="155.0" text="X" />
-                      <Label layoutX="28.0" layoutY="204.0" text="Y" />
-                      <TextField id="tittelA" fx:id="tittelA" layoutX="24.0" layoutY="23.0" onAction="#handleEuclid" prefWidth="200.0" />
-                      <TextField id="tittelB" fx:id="tittelB" layoutX="24.0" layoutY="65.0" onAction="#handleEuclid" prefWidth="200.0" />
-                      <TextField id="tittelNOD" fx:id="tittelNOD" layoutX="24.0" layoutY="114.0" prefWidth="200.0" />
-                      <TextField id="tittelX" fx:id="tittelX" layoutX="24.0" layoutY="172.0" prefWidth="200.0" />
-                      <TextField id="tittelY" fx:id="tittelY" layoutX="24.0" layoutY="221.0" prefWidth="200.0" />
-                      <Button layoutX="24.0" layoutY="258.0" onAction="#handleEuclid" text="Run" />
-                  </children>
-              </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Pow Mod">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <children>
-                        <Label layoutX="24.0" layoutY="6.0" text="Число" />
-                        <Label layoutX="25.0" layoutY="48.0" text="Степень" />
-                        <Label layoutX="25.0" layoutY="97.0" text="Модуль" />
-                        <Label layoutX="26.0" layoutY="148.0" prefHeight="17.0" prefWidth="61.0" text="Результат" />
-                        <TextField id="powNum" fx:id="powNum" layoutX="24.0" layoutY="23.0" onAction="#handlePowMod" prefWidth="200.0" />
-                        <TextField id="powE" fx:id="powE" layoutX="24.0" layoutY="65.0" onAction="#handlePowMod" prefWidth="200.0" />
-                        <TextField id="powMod" fx:id="powMod" layoutX="24.0" layoutY="114.0" prefWidth="200.0" />
-                        <TextField id="powRes" fx:id="powRes" layoutX="24.0" layoutY="165.0" prefWidth="200.0" />
-                        <Button layoutX="24.0" layoutY="258.0" onAction="#handlePowMod" text="Run" />
-                    </children>
-                </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+        <TabPane prefHeight="359.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Euclid">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="210.0" prefWidth="310.0">
+                            <children>
+                                <Label layoutX="24.0" layoutY="6.0" text="A" />
+                                <Label layoutX="25.0" layoutY="48.0" text="B" />
+                                <Label layoutX="25.0" layoutY="97.0" text="НОД(А,В)" />
+                                <Label layoutX="28.0" layoutY="155.0" text="X" />
+                                <Label layoutX="28.0" layoutY="204.0" text="Y" />
+                                <TextField id="tittelA" fx:id="tittelA" layoutX="24.0" layoutY="23.0" onAction="#handleEuclid" prefWidth="200.0" />
+                                <TextField id="tittelB" fx:id="tittelB" layoutX="24.0" layoutY="65.0" onAction="#handleEuclid" prefWidth="200.0" />
+                                <TextField id="tittelNOD" fx:id="tittelNOD" layoutX="24.0" layoutY="114.0" prefWidth="200.0" />
+                                <TextField id="tittelX" fx:id="tittelX" layoutX="24.0" layoutY="172.0" prefWidth="200.0" />
+                                <TextField id="tittelY" fx:id="tittelY" layoutX="24.0" layoutY="221.0" prefWidth="200.0" />
+                                <Button layoutX="24.0" layoutY="258.0" onAction="#handleEuclid" text="Run" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Pow Mod">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="24.0" layoutY="6.0" text="Число" />
+                                <Label layoutX="25.0" layoutY="48.0" text="Степень" />
+                                <Label layoutX="25.0" layoutY="97.0" text="Модуль" />
+                                <Label layoutX="26.0" layoutY="148.0" prefHeight="17.0" prefWidth="61.0" text="Результат" />
+                                <TextField id="powNum" fx:id="powNum" layoutX="24.0" layoutY="23.0" onAction="#handlePowMod" prefWidth="200.0" />
+                                <TextField id="powE" fx:id="powE" layoutX="24.0" layoutY="65.0" onAction="#handlePowMod" prefWidth="200.0" />
+                                <TextField id="powMod" fx:id="powMod" layoutX="24.0" layoutY="114.0" prefWidth="200.0" />
+                                <TextField id="powRes" fx:id="powRes" layoutX="24.0" layoutY="165.0" prefWidth="200.0" />
+                                <Button layoutX="24.0" layoutY="258.0" onAction="#handlePowMod" text="Run" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="RSA">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="330.0" prefWidth="490.0">
+                            <children>
+                                <Label layoutX="14.0" layoutY="25.0" text="p" />
+                                <Label layoutX="10.0" layoutY="50.0" text="q" />
+                                <Label layoutX="10.0" layoutY="75.0" text="N" />
+                                <Label layoutX="1.0" layoutY="100.0" prefHeight="17.0" prefWidth="27.0" text="f(N)" />
+                                <Label layoutX="425.0" layoutY="27.0" text="size" />
+                                <Label layoutX="4.0" layoutY="125.0" text="e" />
+                                <Label layoutX="4.0" layoutY="150.0" text="d" />
+                                <TextField id="rsaP" fx:id="rsaP" layoutX="24.0" layoutY="25.0" onAction="#handlePowMod" prefHeight="25.0" prefWidth="350.0" />
+                                <TextField id="rsaQ" fx:id="rsaQ" layoutX="24.0" layoutY="50.0" onAction="#handlePowMod" prefHeight="25.0" prefWidth="350.0" />
+                                <TextField id="rsaN" fx:id="rsaN" layoutX="24.0" layoutY="75.0" prefHeight="25.0" prefWidth="350.0" />
+                                <TextField id="rsaF" fx:id="rsaF" layoutX="24.0" layoutY="100.0" prefHeight="25.0" prefWidth="350.0" />
+                                <TextField id="rsaSize" fx:id="rsaSize" layoutX="395.0" layoutY="50.0" prefHeight="25.0" prefWidth="100.0" />
+                                <TextField id="rsaE" fx:id="rsaE" layoutX="24.0" layoutY="125.0" prefHeight="25.0" prefWidth="350.0" />
+                                <TextField id="rsaD" fx:id="rsaD" layoutX="24.0" layoutY="150.0" prefHeight="25.0" prefWidth="350.0" />
+
+                                <Button layoutX="75.0" layoutY="258.0" onAction="#handleGenerateKeys" text="Generate Keys" />
+                                <Button layoutX="25.0" layoutY="258.0" onAction="#handlePowMod" text="Run" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
 
     </children>
 </AnchorPane>

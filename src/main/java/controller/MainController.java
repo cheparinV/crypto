@@ -2,6 +2,7 @@ package controller;
 
 import algorithm.Euclid;
 import algorithm.PowMod;
+import algorithm.RSA;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -24,6 +25,14 @@ public class MainController {
     @FXML private TextField powMod;
     @FXML private TextField powRes;
 
+    @FXML private TextField rsaQ;
+    @FXML private TextField rsaP;
+    @FXML private TextField rsaN;
+    @FXML private TextField rsaF;
+    @FXML private TextField rsaSize;
+    @FXML private TextField rsaE;
+    @FXML private TextField rsaD;
+
 
     @FXML
     protected void handleEuclid(ActionEvent event) {
@@ -45,4 +54,11 @@ public class MainController {
         BigInteger result = new PowMod().powMod(base, degreeOfBase, mod);
         powRes.setText(result.toString());
     }
+
+    @FXML
+    private void handleGenerateKeys(ActionEvent event) {
+        RSA rsa = new RSA();
+        int size = Integer.parseInt(
+                rsaSize.getText()
+        );}
 }

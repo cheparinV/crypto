@@ -1,14 +1,14 @@
 package algorithm;
 
 import java.math.BigInteger;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by ASUS-PC on 24.05.2017.
  */
 public class PrimeGenerator {
 
-    public boolean isPrime(BigInteger prime) {
+    public boolean isPrimeMRTest(BigInteger prime) {
         BigInteger two = BigInteger.valueOf(2l);
         if (prime.mod(two).equals(BigInteger.ZERO)) {
             return false;
@@ -17,52 +17,51 @@ public class PrimeGenerator {
             return true;
         }
         BigInteger mPrime = prime.subtract(BigInteger.ONE);
-        //System.out.println(mPrime);
-        BigInteger d = prime.subtract(BigInteger.ONE);
+        BigInteger t = prime.subtract(BigInteger.ONE);
         int s = 0;
-        while (d.mod(two).equals(BigInteger.ZERO)) {
-            d = d.divide(two);
+        while (t.mod(two).equals(BigInteger.ZERO)) {
+            t = t.divide(two);
             s++;
         }
-        BigInteger a = two;
-        BigInteger r = BigInteger.valueOf((long) Math.log(prime.doubleValue()) + 1);
-        BigInteger x;
-        while (!a.equals(r)) {
-            int intD = d.intValue();
-            if (intD < 0) {
+        long count = prime.bitLength()/10;
+        Set<BigInteger> aSet = new HashSet<BigInteger>();
+        while (count > 0) {
+            BigInteger a = BigInteger.ZERO;
+            do {
+                a = new BigInteger(mPrime.bitLength(), new Random());
+            }
+            while (prime.compareTo(a) <= 0 || a.equals(BigInteger.ONE) || aSet.contains(a));
+            aSet.add(a);
+            if (prime.mod(a).equals(BigInteger.ZERO)) {
                 return false;
             }
-            x = a.pow(intD).mod(prime);
-            boolean isPrime = (x.equals(BigInteger.ONE) ||
-                    x.equals(mPrime));
-            int i = 1;
-            while ((!isPrime) && (i <= s-1)) {
-                x = x.pow(2).mod(prime);
-                //System.out.println(i);
-                isPrime = (x.equals(BigInteger.ONE) ||
-                        x.equals(mPrime));
-                i++;
+            BigInteger b = new PowMod().powMod(a, t, prime);
+            if (b.equals(BigInteger.ONE)) {
+                continue;
             }
-            if (!isPrime) {
-                //System.out.println(isPrime);
-                return false;
-            }
-            a = a.add(BigInteger.ONE);
-        }
 
+            for (int i = 0; i < s - 1 && !b.equals(mPrime); i++) {
+                b = new PowMod().powMod(b, two, prime);
+            }
+            if (!b.equals(mPrime)) {
+                return false;
+            }
+            count--;
+        }
         return true;
     }
 
     public BigInteger primeGenerationBySize(int size) {
         String s;
+        List<BigInteger> list = new ArrayList<>();
         while (true) {
             s = new String();
             for (int i = 0; i < size; i++) {
                 s += new Random().nextInt(10);
             }
             BigInteger prime = new BigInteger(s);
-            System.out.println(prime);
-            if (isPrime(prime)) {
+        //    System.out.println(prime);
+            if (isPrimeMRTest(prime)) {
                 return prime;
             }
         }
@@ -126,8 +125,16 @@ public class PrimeGenerator {
 
     public static void main(String[] args) {
         PrimeGenerator primeGenerator = new PrimeGenerator();
-        System.out.println(primeGenerator.primeGenerationBySize(10));
-        System.out.println(primeGenerator.isPrime(BigInteger.valueOf(997l)));
-        primeGenerator.primeGenerate();
+        long start = System.currentTimeMillis();
+        System.out.println(primeGenerator.primeGenerationBySize(309));
+        BigInteger bigInteger = BigInteger.probablePrime(1024, new Random());
+        System.out.println(primeGenerator.isPrimeMRTest(bigInteger));
+        //System.out.println(bigInteger);
+        //System.out.println(bigInteger.toString().length());
+        long end = System.currentTimeMillis();
+        System.out.println("Time");
+        System.out.println((end - start) / 1000);
+        // System.out.println(primeGenerator.isPrimeMRTest(BigInteger.valueOf(997l)));
+        //primeGenerator.primeGenerate();
     }
 }
