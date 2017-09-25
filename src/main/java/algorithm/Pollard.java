@@ -8,10 +8,9 @@ import java.math.BigInteger;
 public class Pollard {
 
     public BigInteger pollard(BigInteger N) {
+//        BigInteger x = new BigInteger(N.bitLength(), new Random());
         BigInteger x = BigInteger.valueOf(2l);
-        BigInteger y = x.pow(2)
-                .subtract(BigInteger.ONE)
-                .mod(N);
+        BigInteger y = BigInteger.ONE;
         int i = 0;
         int stage = 2;
         Euclid euclid = new Euclid();
@@ -23,27 +22,37 @@ public class Pollard {
                         N, x.subtract(y).abs()
                 ).getNOD());
         while (nod.equals(BigInteger.ONE)) {
-            y = y.pow(2)
-                    .subtract(BigInteger.ONE)
-                    .mod(N);
-            y = y.pow(2)
-                    .subtract(BigInteger.ONE)
-                    .mod(N);
+
+            if (i == stage) {
+                y = x;
+                stage *= 2;
+                System.out.println(
+                        "x = " + x + "  " +
+                                " y = " + y +
+                                " nod = " + nod +
+                                " i = " + i
+                );
+            }
             x = x.pow(2)
                     .subtract(BigInteger.ONE)
                     .mod(N);
-            System.out.println(x + " " + y);
+
+            nod = new BigInteger(
+                    euclid.countEuclid(
+                            N, x.subtract(y).abs()
+                    ).getNOD()
+            );
             i++;
         }
-        return new BigInteger(
-                euclid.getNOD()
-        );
+
+        return nod;
     }
 
     public static void main(String[] args) {
         BigInteger pollard = new Pollard()
                 .pollard(new BigInteger(
-                        "1387"
+                       "344572667627327576872986520507"
+                      //  "1387"
                 ));
         System.out.println(pollard);
     }
