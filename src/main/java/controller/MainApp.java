@@ -21,7 +21,7 @@ public class MainApp extends Application {
         Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
         loader.setController(new MainController());
 
-        Scene scene = new Scene(root, 300, 350);
+        Scene scene = new Scene(root, 500, 500);
 
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);

@@ -46,27 +46,38 @@ public class RSA {
     }
 
     public String encrypt(String info) {
-        System.out.println(info);
         byte[] bytes = info.getBytes();
 
         char[] chars = info.toCharArray();
         StringBuilder builder = new StringBuilder();
+        builder.append(1);
         for (char aChar : chars) {
-            System.out.println(((int) aChar));
-            builder.append((int) aChar);
+            final int aInt = aChar;
+            String aStr = aInt < 1000 ? "0" + aInt : "" + aInt;
+            aStr = aInt < 100 ? "00" + aInt : aStr;
+            builder.append(aStr);
         }
         BigInteger bigInteger = new BigInteger(builder.toString());
-        System.out.println("Info :" + bigInteger.toString());
         BigInteger res = this.powMod.powMod(bigInteger, this.e, this.N);
-        System.out.println(res.toString());
         return res.toString();
     }
 
     public String decrypt(String info) {
         BigInteger data = new BigInteger(info);
         BigInteger bigInteger = this.powMod.powMod(data, this.d, this.N);
-        System.out.println("Info :" + bigInteger.toString());
-        return bigInteger.toString();
+        final String result = bigInteger.toString();
+        final char[] chars = result.toCharArray();
+        final StringBuilder tmp = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < chars.length; ++i) {
+            tmp.append(chars[i]);
+            if (i%4 == 0) {
+                final char aChar = (char) Integer.parseInt(tmp.toString());
+                tmp.setLength(0);
+                builder.append(aChar);
+            }
+        }
+        return builder.toString();
     }
 
     public static void main(String[] args) {
@@ -76,10 +87,9 @@ public class RSA {
         if (!mod.equals(BigInteger.ONE)) {
             System.out.println("Problem-----------------------");
         }
-        System.out.println(mod);
-        System.out.println(rsa);
-        String hello = rsa.encrypt("год");
-        rsa.decrypt(hello);
+        String hello = rsa.encrypt("hello привет");
+        System.out.println(hello);
+        System.out.println(rsa.decrypt(hello));
     }
 
     @Override
