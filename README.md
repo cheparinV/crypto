@@ -1,2 +1,2 @@
-# crypto
+# com.univer.repo
 Student project

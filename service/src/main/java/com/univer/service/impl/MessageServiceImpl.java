@@ -1,8 +1,8 @@
-package crypto.service.impl;
+package com.univer.service.impl;
 
 import crypto.algorithm.PrimeGenerator;
 import crypto.algorithm.RSA;
-import crypto.service.MessageService;
+import com.univer.service.MessageService;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -41,6 +41,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public String sendMessage(String message) {
-        new RSA()
+        new RSA();
+        return "";
     }
 }

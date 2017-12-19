@@ -1,8 +1,9 @@
-package crypto.service.impl;
+package com.univer.service.impl;
 
-import crypto.model.User;
-import crypto.repository.UserRepository;
-import crypto.service.AuthService;
+
+import com.univer.repo.model.User;
+import com.univer.repo.repository.UserRepository;
+import com.univer.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

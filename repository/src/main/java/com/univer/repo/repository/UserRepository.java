@@ -1,6 +1,7 @@
-package crypto.repository;
+package com.univer.repo.repository;
 
-import crypto.model.User;
+
+import com.univer.repo.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 /**

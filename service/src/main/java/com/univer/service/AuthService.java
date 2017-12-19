@@ -1,6 +1,7 @@
-package crypto.service;
+package com.univer.service;
 
-import crypto.model.User;
+
+import com.univer.repo.model.User;
 
 /**
  * @author Vladislav Cheparin (vladislav.cheparin.gdc@ts.fujitsu.com)

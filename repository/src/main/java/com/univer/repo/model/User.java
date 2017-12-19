@@ -1,4 +1,4 @@
-package crypto.model;
+package com.univer.repo.model;
 
 import org.springframework.util.DigestUtils;
 
