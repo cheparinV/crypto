@@ -1,8 +1,11 @@
 package crypto.model;
 
+import org.springframework.util.DigestUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 /**
  * @author Vladislav Cheparin (vladislav.cheparin.gdc@ts.fujitsu.com)
@@ -13,6 +16,7 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    private String name;
     private String password;
     private String bigNumber;
 
@@ -21,6 +25,16 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public User setName(String name) {
+        this.name = name;
+        return this;
     }
 
     public String getPassword() {
@@ -52,10 +66,10 @@ public class User {
         return getBigNumber().equals(user.getBigNumber());
     }
 
-    @Override
-    public int hashCode() {
-        int result = getPassword().hashCode();
-        result = 31 * result + getBigNumber().hashCode();
-        return result;
+
+    public String hashCoder() {
+        String result = password + bigNumber;
+        final byte[] md5Digest = DigestUtils.md5Digest(result.getBytes());
+        return Arrays.toString(md5Digest);
     }
 }

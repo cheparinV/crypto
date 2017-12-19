@@ -32,6 +32,11 @@
         <dependencies>
             <dependency>
                 <groupId>com.univer</groupId>
+                <artifactId>algorithms</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.univer</groupId>
                 <artifactId>repository</artifactId>
                 <version>1.0</version>
             </dependency>

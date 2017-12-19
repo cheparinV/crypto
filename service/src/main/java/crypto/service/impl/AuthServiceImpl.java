@@ -22,8 +22,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String callResponseByUserId(Long id) {
-        final User one = userRepository.findOne(id);
+    public String callResponseByUserId(String name) {
+        final User one = userRepository.findFirstByName(name);
         if (one != null) {
             final long bigNumber = new Random().nextLong();
             userRepository.save(
@@ -35,8 +35,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Boolean callResponseByHash(Long id, String hash) {
-        final User user = userRepository.findOne(id);
-        return String.valueOf(user.hashCode()).equals(hash);
+    public Boolean callResponseByHash(String name, String hash) {
+        final User user = userRepository.findFirstByName(name);
+        return user.hashCoder().equals(hash);
+    }
+
+    public User newUser(String name, String password) {
+        return userRepository.save(
+                new User().setName(name).setPassword(password)
+        );
     }
 }
