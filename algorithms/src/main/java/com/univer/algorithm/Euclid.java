@@ -1,4 +1,4 @@
-package crypto.algorithm;
+package com.univer.algorithm;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,4 +1,4 @@
-package crypto.algorithm;
+package com.univer.algorithm;
 
 import junit.framework.Assert;
 
