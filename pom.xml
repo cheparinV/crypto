@@ -27,30 +27,62 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <swagger.version>1.5.10</swagger.version>
         <springfox.version>2.6.0</springfox.version>
-        <retrofit.version>2.1.0</retrofit.version>
-        <okhttp3.version>3.3.0</okhttp3.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.univer</groupId>
-                <artifactId>rest</artifactId>
-                <version>1.0.0</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.univer</groupId>
                 <artifactId>algorithms</artifactId>
-                <version>1.0.0</version>
+                <version>1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.univer</groupId>
+                <artifactId>rest</artifactId>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.univer</groupId>
                 <artifactId>repository</artifactId>
-                <version>1.0.0</version>
+                <version>1.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>3.3.7</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.7</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.1</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
 
 
             <dependency>
@@ -88,8 +120,8 @@
             <!-- csv reader -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
-                <artifactId>commons-csv</artifactId>
-                <version>1.5</version>
+                <artifactId>commons-math3</artifactId>
+                <version>3.6.1</version>
             </dependency>
 
             <dependency>
@@ -100,6 +132,36 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+        <repository>
+            <id>org.jboss.repository.releases</id>
+            <name>JBoss Maven Release Repository</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 
 </project>

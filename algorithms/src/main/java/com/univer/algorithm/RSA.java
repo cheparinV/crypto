@@ -13,6 +13,7 @@ public class RSA {
     private BigInteger q;
     private BigInteger p;
     private BigInteger N;
+    private BigInteger sN;
     private BigInteger fN;
     private BigInteger e;
     private BigInteger d;
@@ -27,6 +28,7 @@ public class RSA {
         this.q = primeGenerator.primeGenerationBySize(size);
         this.p = primeGenerator.primeGenerationBySize(size);
         this.N = p.multiply(q);
+        this.sN = N;
         this.fN = p.subtract(BigInteger.ONE)
                 .multiply(
                         q.subtract(BigInteger.ONE)
@@ -58,7 +60,7 @@ public class RSA {
             builder.append(aStr);
         }
         BigInteger bigInteger = new BigInteger(builder.toString());
-        BigInteger res = this.powMod.powMod(bigInteger, this.e, this.N);
+        BigInteger res = this.powMod.powMod(bigInteger, this.e, this.sN);
         return res.toString();
     }
 
@@ -82,7 +84,7 @@ public class RSA {
 
     public static void main(String[] args) {
         RSA rsa = new RSA();
-        rsa.generateAll(309);
+        rsa.generateAll(100);
         BigInteger mod = rsa.getE().multiply(rsa.getD()).mod(rsa.getfN());
         if (!mod.equals(BigInteger.ONE)) {
             System.out.println("Problem-----------------------");
@@ -90,6 +92,14 @@ public class RSA {
         String hello = rsa.encrypt("hello привет");
         System.out.println(hello);
         System.out.println(rsa.decrypt(hello));
+    }
+
+    public void setN(BigInteger n) {
+        sN = n;
+    }
+
+    public void setE(BigInteger e) {
+        this.e = e;
     }
 
     @Override

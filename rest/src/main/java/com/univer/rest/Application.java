@@ -1,4 +1,4 @@
-package com.univer.repo;
+package com.univer.rest;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +11,8 @@ import org.springframework.boot.system.ApplicationPidFileWriter;
 //@Import({
 //        ServiceConfig.class
 //})
+
+
 @SpringBootApplication
 public class Application {
 

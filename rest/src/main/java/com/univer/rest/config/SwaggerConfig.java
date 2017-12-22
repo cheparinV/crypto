@@ -1,4 +1,4 @@
-package com.univer.repo.config;
+package com.univer.rest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
