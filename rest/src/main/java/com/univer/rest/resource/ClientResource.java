@@ -34,6 +34,7 @@ public class ClientResource {
 
     String hash;
     RSA rsa;
+    private String cX;
 
     MessageService service = new MessageService();
 
@@ -115,6 +116,7 @@ public class ClientResource {
         map.add("k", bigInteger.toString());
         request = new HttpEntity<>(map, headers);
         final String result = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/authDiff/ck", request, String.class);
+        this.cX = service.getcX().toString();
         return result + " | cY: "+ service.getcX();
     }
 
@@ -164,5 +166,27 @@ public class ClientResource {
                 new RestTemplate().postForObject("http://localhost:8080/crypto/auth/rsa/message", request, String.class)
         );
     }
+
+    @RequestMapping(value = "/diff/message", method = RequestMethod.POST)
+    public String diffMessage(
+            @RequestParam("login") String login,
+            @RequestParam("message") String message
+    ) {
+        final String encrypt = this.service.encryptMessage(message);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("login", login);
+        map.add("hash", this.hash);
+        map.add("message", encrypt);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        return this.service.decryptMessage(
+                new RestTemplate().postForObject("http://localhost:8080/crypto/auth/diff/message", request, String.class)
+        );
+    }
+
+
 
 }

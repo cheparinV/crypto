@@ -135,6 +135,17 @@ public class AuthResource {
         return this.rsa.encrypt(decrypt + "  server number:" + String.valueOf(new Random().nextInt()));
     }
 
+    @RequestMapping(value = "/diff/message", method = RequestMethod.POST)
+    public String authDiffMessage(
+            @RequestParam("login") String login,
+            @RequestParam("hash") String hash,
+            @RequestParam("message") String message
+    ) {
+        final String decrypt = this.service.decryptMessage(message);
+        System.out.println(decrypt);
+        return this.service.encryptMessage(decrypt + "  server number:" + String.valueOf(new Random().nextInt()));
+    }
+
 
 
 
