@@ -1,6 +1,7 @@
 package com.univer.rest.service;
 
 import com.univer.algorithm.PrimeGenerator;
+import com.univer.algorithm.RC4;
 import com.univer.algorithm.RSA;
 
 import java.math.BigInteger;
@@ -39,7 +40,7 @@ public class MessageService {
     public BigInteger getK(Map<String, String> map) {
         q = new BigInteger(map.get("q"));
         n = new BigInteger(map.get("n"));
-        BigInteger m = new BigInteger(map.get("q"));
+        BigInteger m = new BigInteger(map.get("m"));
         BigInteger y = BigInteger.ONE;
         do {
             y = new BigInteger(n.bitLength(), new Random());
@@ -49,7 +50,9 @@ public class MessageService {
     }
 
     public BigInteger setK(String primeK) {
-        return cX = new BigInteger(primeK).modPow(x, n);
+        final BigInteger cX = new BigInteger(primeK).modPow(x, n);
+        this.cX = cX;
+        return cX;
     }
 
     public BigInteger getcX() {
@@ -60,5 +63,17 @@ public class MessageService {
         new RSA();
         return "";
     }
+
+    public String encryptMessage(String message) {
+        final RC4 rc4 = new RC4();
+        return rc4.encryptMessage(message, cX.toString());
+    }
+
+    public String decryptMessage(String decrypt) {
+        final RC4 rc4 = new RC4();
+        return rc4.decryptMessage(decrypt, cX.toString());
+    }
+
+
 
 }
