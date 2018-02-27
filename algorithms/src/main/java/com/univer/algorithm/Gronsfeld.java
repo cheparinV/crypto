@@ -17,7 +17,7 @@ public class Gronsfeld {
 
     private String crypt(String string, Integer[] key) {
         final Matrix matrix = new Matrix();
-        final char[] chars = string.toCharArray();
+        final char[] chars = string.toUpperCase().toCharArray();
         final StringBuilder builder = new StringBuilder(chars.length);
         for (int i = 0; i < chars.length; i++) {
             final Integer numB = matrix.getNumberByChar(chars[i]);

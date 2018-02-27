@@ -4,6 +4,7 @@ import com.univer.algorithm.RSA;
 import com.univer.rest.repo.UserRepo;
 import com.univer.rest.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,6 +36,9 @@ public class ClientResource {
     String hash;
     RSA rsa;
 
+    @Value("${custom.host.url}")
+    private String hostUrl;
+
     MessageService service = new MessageService();
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -45,12 +49,12 @@ public class ClientResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         map.add("login", login);
         map.add("pass", password);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        return new RestTemplate().postForObject("http://localhost:8080/crypto/auth/add",request, String.class);
+        return new RestTemplate().postForObject(hostUrl +"crypto/auth/add", request, String.class);
 
     }
 
@@ -62,25 +66,24 @@ public class ClientResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("login", login);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        final String object = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/auth", request, String.class);
+        final String object = new RestTemplate().postForObject(hostUrl +"crypto/auth/auth", request, String.class);
 
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         final String hash = DigestUtils.md5DigestAsHex((password + object).getBytes());
 
-        map= new LinkedMultiValueMap<>();
+        map = new LinkedMultiValueMap<>();
         map.add("login", login);
         map.add("hash", hash);
 
         request = new HttpEntity<>(map, headers);
-        final String result = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/authStep", request, String.class);
+        final String result = new RestTemplate().postForObject(hostUrl +"crypto/auth/authStep", request, String.class);
         this.hash = hash;
         return result + " | hash: " + hash;
     }
-
 
 
     @RequestMapping(value = "/diff", method = RequestMethod.GET)
@@ -91,21 +94,21 @@ public class ClientResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("login", login);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        final String object = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/auth", request, String.class);
+        final String object = new RestTemplate().postForObject(hostUrl +"crypto/auth/auth", request, String.class);
 
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         final String hash = DigestUtils.md5DigestAsHex((password + object).getBytes());
 
-        map= new LinkedMultiValueMap<>();
+        map = new LinkedMultiValueMap<>();
         map.add("login", login);
         map.add("hash", hash);
 
         request = new HttpEntity<>(map, headers);
-        final Map map1 = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/authDiff", request, Map.class);
+        final Map map1 = new RestTemplate().postForObject(hostUrl +"crypto/auth/authDiff", request, Map.class);
         if (map1.get("result").equals("BAD")) {
             return "not correct auth";
         }
@@ -114,8 +117,8 @@ public class ClientResource {
 
         map.add("k", bigInteger.toString());
         request = new HttpEntity<>(map, headers);
-        final String result = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/authDiff/ck", request, String.class);
-        return result + " | cY: "+ service.getcX();
+        final String result = new RestTemplate().postForObject(hostUrl +"crypto/auth/authDiff/ck", request, String.class);
+        return result + " | cY: " + service.getcX();
     }
 
     @RequestMapping(value = "/rsa", method = RequestMethod.POST)
@@ -124,7 +127,7 @@ public class ClientResource {
     ) {
         this.rsa = new RSA();
         this.rsa.generateAll(100);
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("login", login);
         map.add("hash", this.hash);
         map.add("e", rsa.getE().toString());
@@ -133,7 +136,7 @@ public class ClientResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        final Map object = new RestTemplate().postForObject("http://localhost:8080/crypto/auth/rsa", request, Map.class);
+        final Map object = new RestTemplate().postForObject(hostUrl +"crypto/auth/rsa", request, Map.class);
         if (object.get("result").equals("BAD")) {
             return "not correct auth";
         }
@@ -152,7 +155,7 @@ public class ClientResource {
     ) {
         final String encrypt = this.rsa.encrypt(message);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("login", login);
         map.add("hash", this.hash);
         map.add("message", encrypt);
@@ -161,7 +164,7 @@ public class ClientResource {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         return this.rsa.decrypt(
-                new RestTemplate().postForObject("http://localhost:8080/crypto/auth/rsa/message", request, String.class)
+                new RestTemplate().postForObject(hostUrl +"crypto/auth/rsa/message", request, String.class)
         );
     }
 

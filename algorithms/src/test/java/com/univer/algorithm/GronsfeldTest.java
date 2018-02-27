@@ -9,6 +9,7 @@ public class GronsfeldTest {
 
     private final String TEST = "GRONSFELD";
     private final String KEY = "201520152";
+
     /**
      * ${CLASS} can work.
      *
