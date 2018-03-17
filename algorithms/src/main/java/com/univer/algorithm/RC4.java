@@ -2,19 +2,10 @@ package com.univer.algorithm;
 
 import java.util.Arrays;
 
-/**
- * @author Vladislav Cheparin (vladislav.cheparin.gdc@ts.fujitsu.com)
- */
+
 public class RC4 {
     private static final int BYTE_LENGTH = 256;
-    private static final int KEY_MIN_LENGTH = 5;
-    /**
-     * Key array
-     */
     private byte[] key = new byte[BYTE_LENGTH - 1];
-    /**
-     * Sbox
-     */
     private int[] newKey = new int[BYTE_LENGTH];
 
     public RC4() {
@@ -24,10 +15,7 @@ public class RC4 {
         this.key = key.getBytes();
     }
 
-    private void reset() {
-        Arrays.fill(key, (byte) 0);
-        Arrays.fill(newKey, 0);
-    }
+
 
     public String encryptMessage(String message, String key) {
         this.key = key.getBytes();
@@ -83,9 +71,9 @@ public class RC4 {
         return newKey;
     }
 
-    private void swap(int i, int j, int[] sbox) {
-        int temp = sbox[i];
-        sbox[i] = sbox[j];
-        sbox[j] = temp;
+    private void swap(int i, int j, int[] array) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
 }
