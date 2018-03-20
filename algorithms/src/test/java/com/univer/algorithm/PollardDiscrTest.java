@@ -15,7 +15,7 @@ public class PollardDiscrTest {
   @Test
   public void testGetX() throws Exception {
 
-    final PollardDiscr pollardDiscr = new PollardDiscr(3L, 13L, 23L);
+    final PollardDiscr pollardDiscr = new PollardDiscr(3L, 13L, 25L);
     System.out.println(pollardDiscr.premutiveX());
     final Long x = pollardDiscr.getX();
     System.out.println(x);

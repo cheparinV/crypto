@@ -18,7 +18,7 @@ public class PollardDiscr {
   }
 
   public Long getX() {
-    Long n = this.prime - 1;
+    Long n = (long)this.Euler(Integer.valueOf((int) this.prime));
 
     Long a1 = 0L;
     Long a2 = 0L;
@@ -39,7 +39,7 @@ public class PollardDiscr {
 
       if (x1 < this.prime / 3) {
         x1 = (this.beta * x1) % this.prime;
-        a1 = a1;
+        a1 = a1 % n;
         b1 = (b1 + 1) % n;
       } else {
         if (x1 >= (this.prime / 3) && x1 < (2 * this.prime / 3)) {
@@ -50,7 +50,7 @@ public class PollardDiscr {
           if (x1 >= (2 * this.prime / 3)) {
             x1 = (this.alpha * x1) % this.prime;
             a1 = (a1 + 1) % n;
-            b1 = b1;
+            b1 = b1 % n;
           }
         }
       }
@@ -85,8 +85,9 @@ public class PollardDiscr {
       return 0L;
     }
 
-    final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(v), BigInteger.valueOf(n));
-    Long d = Long.valueOf(euclid.getNOD());
+//    final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(v), BigInteger.valueOf(n));
+//    Long d = Long.valueOf(euclid.getNOD());
+    final long d = BigInteger.valueOf(v).gcd(BigInteger.valueOf(n)).longValue();
     double nu = Math.pow(v, -1) % n;
     double x = 0L;
     for (int i = 0; i != d + 1; ++i) {
@@ -111,6 +112,28 @@ public class PollardDiscr {
       x++;
     }
     return 0L;
+  }
+
+  public Integer Euler(Integer n) {
+    Integer result = 1;
+    for (int i = 2; i * i <= n; ++i) {
+      Integer p = 1;
+      while (n % i == 0) {
+        n /= i;
+        p *= i;
+      }
+      p /= i;
+      if (p != 0) {
+        result *= (p * (i - 1));
+      }
+    }
+    Integer m = n - 1;
+    if (m == 0) {
+      return result;
+    } else {
+      return m * result;
+    }
+
   }
 
   //  private Long nextU(Long u, Long z) {
