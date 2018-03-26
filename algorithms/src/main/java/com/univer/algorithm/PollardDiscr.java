@@ -17,8 +17,12 @@ public class PollardDiscr {
     this.beta = beta;
   }
 
+  public Long mod(Long a, Long b) {
+    return Math.floorMod(a, b);
+  }
+
   public Long getX() {
-    Long n = (long)this.Euler(Integer.valueOf((int) this.prime));
+    Long n = (long) this.Euler(Integer.valueOf((int) this.prime));
 
     Long a1 = 0L;
     Long a2 = 0L;
@@ -38,37 +42,37 @@ public class PollardDiscr {
       isStart = false;
 
       if (x1 < this.prime / 3) {
-        x1 = (this.beta * x1) % this.prime;
-        a1 = a1 % n;
-        b1 = (b1 + 1) % n;
+        x1 = this.mod((this.beta * x1), this.prime);
+        a1 = a1;
+        b1 = this.mod((b1 + 1), n);
       } else {
         if (x1 >= (this.prime / 3) && x1 < (2 * this.prime / 3)) {
-          x1 = (x1 * x1) % this.prime;
-          a1 = (2 * a1) % n;
-          b1 = (2 * b1) % n;
+          x1 = this.mod((x1 * x1), this.prime);
+          a1 = this.mod((2 * a1), n);
+          b1 = this.mod((2 * b1), n);
         } else {
           if (x1 >= (2 * this.prime / 3)) {
-            x1 = (this.alpha * x1) % this.prime;
-            a1 = (a1 + 1) % n;
-            b1 = b1 % n;
+            x1 = this.mod((this.alpha * x1), this.prime);
+            a1 = this.mod((a1 + 1), n);
+            b1 = b1;
           }
         }
       }
 
       for (int i = 0; i < 2; ++i) {
         if (x2 < this.prime / 3) {
-          x2 = (this.beta * x2) % this.prime;
+          x2 = this.mod((this.beta * x2), this.prime);
           a2 = a2;
-          b2 = (b2 + 1) % n;
+          b2 = this.mod((b2 + 1), n);
         } else {
           if (x2 >= (this.prime / 3) && x2 < (2 * this.prime / 3)) {
-            x2 = (x2 * x2) % this.prime;
-            a2 = (2 * a2) % n;
-            b2 = (2 * b2) % n;
+            x2 = this.mod((x2 * x2), this.prime);
+            a2 = this.mod((2 * a2), n);
+            b2 = this.mod((2 * b2), n);
           } else {
             if (x2 >= (2 * this.prime / 3)) {
-              x2 = (this.alpha * x2) % this.prime;
-              a2 = (a2 + 1) % n;
+              x2 = this.mod((this.alpha * x2), this.prime);
+              a2 = this.mod((a2 + 1), n);
               b2 = b2;
             }
           }
@@ -77,10 +81,10 @@ public class PollardDiscr {
       }
     }
 
-    Long u = (a1 - a2) % n;
-    Long v = (b2 - b1) % n;
+    Long u = this.mod((a2 - a1), n);
+    Long v = this.mod((b1 - b2), n);
 
-    if (v % n == 0) {
+    if (this.mod(v, n) == 0) {
       System.err.println("Not found x!");
       return 0L;
     }
@@ -88,12 +92,22 @@ public class PollardDiscr {
 //    final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(v), BigInteger.valueOf(n));
 //    Long d = Long.valueOf(euclid.getNOD());
     final long d = BigInteger.valueOf(v).gcd(BigInteger.valueOf(n)).longValue();
+    final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(n), BigInteger.valueOf(v));
+    final long l = Long.valueOf(euclid.getX()) * d;
+//    for (int i = 0; i <= d; ++i) {
+//      final long l1 = l + i * (n / d);
+//      final Long mod = this.mod((long) (Math.pow(this.alpha, l1) - this.beta), this.prime);
+//      if (mod == 0) {
+//        return l1;
+//      }
+//    }
     double nu = Math.pow(v, -1) % n;
     double x = 0L;
+    long m = this.mod(v, d) == 0 ? d : this.mod(v, d);
+    final double v1 = u / m;
     for (int i = 0; i != d + 1; ++i) {
-      final double v1 = u * nu;
-      x = ((v1 + i * n) / d) % n;
-      double mod = (Math.pow(this.alpha, x) - this.beta) % this.prime;
+      x = this.mod((long) ((v1 + i * n) / d), (long) n);
+      double mod = this.mod((long) (Math.pow(this.alpha, x) - this.beta), this.prime);
       if (mod == 0) {
         return (long) x;
       }
