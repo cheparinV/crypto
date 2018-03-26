@@ -18,7 +18,7 @@ public class PollardDiscr {
   }
 
   public Long getX() {
-    Long n = (long)this.Euler(Integer.valueOf((int) this.prime));
+    Long n = (long) this.Euler((int) this.prime);
 
     Long a1 = 0L;
     Long a2 = 0L;
@@ -88,7 +88,10 @@ public class PollardDiscr {
 //    final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(v), BigInteger.valueOf(n));
 //    Long d = Long.valueOf(euclid.getNOD());
     final long d = BigInteger.valueOf(v).gcd(BigInteger.valueOf(n)).longValue();
-    double nu = Math.pow(v, -1) % n;
+    double nu = Math.pow(v, -1);
+    if (d == 1) {
+      nu = this.getOposite(v.intValue(), n.intValue());
+    }
     double x = 0L;
     for (int i = 0; i != d + 1; ++i) {
       final double v1 = u * nu;
@@ -134,6 +137,10 @@ public class PollardDiscr {
       return m * result;
     }
 
+  }
+
+  public Integer getOposite(Integer v, Integer n) {
+    return BigInteger.valueOf(v).modInverse(BigInteger.valueOf(n)).intValue();
   }
 
   //  private Long nextU(Long u, Long z) {

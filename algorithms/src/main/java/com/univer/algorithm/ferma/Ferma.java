@@ -16,6 +16,22 @@ public class Ferma {
     this.k = k;
   }
 
+  public Integer isComposite() {
+    final Integer integer = this.checkByPrimes();
+    if (integer > 1) {
+      return integer;
+    }
+    for (int i = 1; i <= this.k; ++i) {
+      if (this.checkConditions(i)) {
+        final double probableSquare = this.getVarByNum(i);
+        if (this.isSquare(probableSquare)) {
+          return this.getFactor(i);
+        }
+      }
+    }
+    return integer;
+  }
+
   private Integer checkByPrimes() {
     this.primes = new EratoshenesSieve(k).getPrimes();
     for (Integer prime : this.primes) {
@@ -41,22 +57,6 @@ public class Ferma {
       }
     }
     return true;
-  }
-
-  public Integer isComposite() {
-    final Integer integer = this.checkByPrimes();
-    if (integer > 1) {
-      return integer;
-    }
-    for (int i = 1; i <= this.k; ++i) {
-      if (this.checkConditions(i)) {
-        final double probableSquare = this.getVarByNum(i);
-        if (this.isSquare(probableSquare)) {
-          return this.getFactor(i);
-        }
-      }
-    }
-    return integer;
   }
 
   private double getVarByNum(Integer i) {
