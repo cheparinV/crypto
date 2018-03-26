@@ -20,10 +20,10 @@ public class PollardDiscrTest {
     final Long x0 = pollardDiscr0.getX();
     System.out.println(x0);
 
-    final PollardDiscr pollardDiscr = new PollardDiscr(3L, 13L, 23L);
-    System.out.println(pollardDiscr.premutiveX());
-    final Long x = pollardDiscr.getX();
-    System.out.println(x);
+    final PollardDiscr pollardDiscr01 = new PollardDiscr(3L, 13L, 23L);
+    System.out.println(pollardDiscr01.premutiveX());
+    final Long x01 = pollardDiscr01.getX();
+    System.out.println(x01);
 
     final PollardDiscr pollardDiscr1 = new PollardDiscr(5L, 3L, 23L);
     System.out.println(pollardDiscr1.premutiveX());
@@ -42,5 +42,11 @@ public class PollardDiscrTest {
 
 
 
+    final PollardDiscr pollardDiscr = new PollardDiscr(3L,  13L, 25L);
+    System.out.println(pollardDiscr.premutiveX());
+    System.out.println(pollardDiscr.getX());
+    final PollardDiscr discr = new PollardDiscr(10L, 64L, 107L);
+    System.out.println(discr.premutiveX());
+    System.out.println(discr.getX());
   }
 }

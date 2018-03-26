@@ -10,7 +10,6 @@
     <modules>
         <module>algorithms</module>
         <module>rest</module>
-        <module>repository</module>
     </modules>
     <packaging>pom</packaging>
 
