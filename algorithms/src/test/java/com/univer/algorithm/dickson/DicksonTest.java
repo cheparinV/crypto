@@ -1,8 +1,9 @@
 package com.univer.algorithm.dickson;
 
+import com.univer.algorithm.QSieve;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -10,6 +11,7 @@ import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.util.Pair;
 import org.junit.Test;
 
 /**
@@ -45,20 +47,27 @@ public class DicksonTest {
 
   @Test
   public void testDickson() throws Exception {
-    Integer n = 89755;
+    Integer n = 2041;
     final int sqrt = (int) Math.sqrt(n);
 
     final Dickson dickson = new Dickson(n);
     final List<Integer> fBase = dickson.chooseFBase(n, sqrt);
+    final HashMap<Integer, Integer> map = new HashMap<>();
+    final ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
     final ArrayList<List<Integer>> matrix = new ArrayList<>();
     for (int i = 0; i < sqrt / 2; ++i) {
       final int b = sqrt + new Random().nextInt(n - sqrt);
-      final Map<Integer, Integer> bMap = dickson.getBMap(b, fBase);
-      matrix.add(
-          dickson.alphaArray(bMap)
-      );
+      final int mod = Math.floorMod(b * b, n);
+      final List<Integer> list = dickson.getBMap(mod, fBase);
+      if (list.isEmpty()) {
+        continue;
+      }
+      pairs.add(new Pair<>(b, mod));
+      matrix.add(list);
     }
-    dickson.gauss(matrix);
+    final List<List<Integer>> gauss = dickson.gauss(matrix);
+    final Integer integer = new QSieve().gcdForQSieve(pairs, gauss, n);
+    System.out.println(integer);
   }
 }
 
