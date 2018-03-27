@@ -32,6 +32,12 @@
         <dependencies>
 
             <dependency>
+                <groupId>com.googlecode.matrix-toolkits-java</groupId>
+                <artifactId>mtj</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.univer</groupId>
                 <artifactId>algorithms</artifactId>
                 <version>1.0</version>
