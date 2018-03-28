@@ -24,7 +24,6 @@ public class PollardDiscr {
   public Long getX() {
     Long n = (long) this.Euler(Integer.valueOf((int) this.prime));
 
-
     Long a1 = 0L;
     Long a2 = 0L;
 
@@ -82,8 +81,8 @@ public class PollardDiscr {
       }
     }
 
-    Long u = this.mod((a2 - a1), n);
-    Long v = this.mod((b1 - b2), n);
+    Long u = this.mod((a1 - a2), n);
+    Long v = this.mod((b2 - b1), n);
 
     if (this.mod(v, n) == 0) {
       System.err.println("Not found x!");
@@ -94,22 +93,38 @@ public class PollardDiscr {
 //    Long d = Long.valueOf(euclid.getNOD());
     final long d = BigInteger.valueOf(v).gcd(BigInteger.valueOf(n)).longValue();
     final Euclid euclid = new Euclid().countEuclid(BigInteger.valueOf(n), BigInteger.valueOf(v));
-    final long l = Long.valueOf(euclid.getX()) * d;
-//    for (int i = 0; i <= d; ++i) {
-//      final long l1 = l + i * (n / d);
-//      final Long mod = this.mod((long) (Math.pow(this.alpha, l1) - this.beta), this.prime);
-//      if (mod == 0) {
-//        return l1;
-//      }
-//    }
+    final long l = Math.abs(Long.valueOf(euclid.getX()) * d);
+    for (int i = 0; i <= d; ++i) {
+      final long l1 = l + i * l;
+
+      final BigInteger pow = BigInteger.valueOf(this.alpha)
+          .modPow(BigInteger.valueOf(l1), BigInteger.valueOf(this.prime));
+      final long l2 = pow.intValue() - this.beta;
+      final Long mod = this.mod((long) (Math.pow(this.alpha, l1) - this.beta), this.prime);
+      if (l2 == 0) {
+        return l1;
+      }
+    }
+    for (int i = 0; i <= d; ++i) {
+      final long l1 = l + i * (n/d);
+
+      final BigInteger pow = BigInteger.valueOf(this.alpha)
+          .modPow(BigInteger.valueOf(l1), BigInteger.valueOf(this.prime));
+      final long l2 = pow.intValue() - this.beta;
+      final Long mod = this.mod((long) (Math.pow(this.alpha, l1) - this.beta), this.prime);
+      if (l2 == 0) {
+        return l1;
+      }
+
+    }
     double nu = Math.pow(v, -1) % n;
     nu = Math.pow(v, -1);
     if (d == 1) {
       nu = this.getOposite(v.intValue(), n.intValue());
     }
     double x = 0L;
-    long m = this.mod(v, d) == 0 ? d : this.mod(v, d);
-    final double v1 = u / m;
+    //long m = this.mod(v, d) == 0 ? d : this.mod(v, d);
+    final double v1 = u /v;
     for (int i = 0; i != d + 1; ++i) {
       x = this.mod((long) ((v1 + i * n) / d), (long) n);
       double mod = this.mod((long) (Math.pow(this.alpha, x) - this.beta), this.prime);
@@ -117,7 +132,7 @@ public class PollardDiscr {
         return (long) x;
       }
     }
-    System.err.println("Not found x!");
+    //System.err.println("Not found x!");
     return (long) x;
   }
 

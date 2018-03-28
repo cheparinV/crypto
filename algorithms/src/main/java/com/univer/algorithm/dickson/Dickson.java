@@ -31,6 +31,11 @@ public class Dickson {
 
   public List<Integer> getBMap(Integer b, List<Integer> fBase) {
     final ArrayList<Integer> list = new ArrayList<>();
+    if (b < 0) {
+      list.add(1);
+    } else {
+      list.add(0);
+    }
     for (Integer integer : fBase) {
       int k = 0;
       while (Math.floorMod(b, integer) == 0) {
@@ -42,7 +47,7 @@ public class Dickson {
           Math.floorMod(k, 2)
       );
     }
-    if (b != 1) {
+    if (Math.abs(b) != 1 ) {
       return new ArrayList<>();
     }
     return list;
@@ -70,8 +75,8 @@ public class Dickson {
         } else {
           row.add(0);
         }
-        unitMatrix.add(row);
       }
+      unitMatrix.add(row);
     }
     final int m = matrix.size();
     final int n = matrix.get(0).size();
@@ -103,14 +108,14 @@ public class Dickson {
                 matrix.get(i).get(l) + matrix.get(order.get(k)).get(l),
                 2);
             matrix.get(order.get(i))
-                .add(l, mod);
+                .set(l, mod);
           }
           for (int l = 0; l < m; ++l) {
             final int mod = Math.floorMod(
                 unitMatrix.get(i).get(l) + unitMatrix.get(order.get(k)).get(l),
                 2);
-            matrix.get(order.get(i))
-                .add(l, mod);
+            unitMatrix.get(order.get(i))
+                .set(l, mod);
           }
         }
       }

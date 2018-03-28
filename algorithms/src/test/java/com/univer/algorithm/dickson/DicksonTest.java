@@ -4,7 +4,6 @@ import com.univer.algorithm.QSieve;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -47,17 +46,19 @@ public class DicksonTest {
 
   @Test
   public void testDickson() throws Exception {
-    Integer n = 2041;
+    Integer n = 50611;
+    Integer range = 1000;
     final int sqrt = (int) Math.sqrt(n);
 
     final Dickson dickson = new Dickson(n);
-    final List<Integer> fBase = dickson.chooseFBase(n, sqrt);
+    final List<Integer> fBase = dickson.chooseFBase(n, 200);
     final HashMap<Integer, Integer> map = new HashMap<>();
     final ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
     final ArrayList<List<Integer>> matrix = new ArrayList<>();
-    for (int i = 0; i < sqrt / 2; ++i) {
-      final int b = sqrt + new Random().nextInt(n - sqrt);
-      final int mod = Math.floorMod(b * b, n);
+    //final int i1 = new Random().nextInt(sqrt);
+    for (int i = -range/2; i < range; ++i) {
+      final int b = sqrt + i;
+      final int mod = b * b - n;
       final List<Integer> list = dickson.getBMap(mod, fBase);
       if (list.isEmpty()) {
         continue;
