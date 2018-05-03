@@ -10,7 +10,6 @@
     <modules>
         <module>algorithms</module>
         <module>rest</module>
-        <module>repository</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -31,6 +30,12 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.googlecode.matrix-toolkits-java</groupId>
+                <artifactId>mtj</artifactId>
+                <version>1.0.2</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.univer</groupId>
