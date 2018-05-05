@@ -16,6 +16,7 @@ public class BabyGiantStepTest {
     @Test
     public void testAlgo() throws Exception {
         System.out.println(new BabyGiantStep().algo(23,5, 3));
+        System.out.println(new BabyGiantStep().algo(107,10, 64));
     }
 
 }
