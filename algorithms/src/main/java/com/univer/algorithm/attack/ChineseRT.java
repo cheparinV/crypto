@@ -1,6 +1,7 @@
 package com.univer.algorithm.attack;
 
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
@@ -8,47 +9,55 @@ import java.util.Arrays;
  */
 public class ChineseRT {
 
-  public static int chineseRemainder(int[] n, int[] a) {
+    public static BigInteger chineseRemainder(BigInteger[] n, BigInteger[] a) {
 
-    int prod = Arrays.stream(n).reduce(1, (i, j) -> i * j);
+        BigInteger prod = Arrays.stream(n).reduce(BigInteger.ONE, BigInteger::multiply);
 
-    int p, sm = 0;
-    for (int i = 0; i < n.length; i++) {
-      p = prod / n[i];
-      sm += a[i] * mulInv(p, n[i]) * p;
-    }
-    return sm % prod;
-  }
-
-  private static int mulInv(int a, int b) {
-    int b0 = b;
-    int x0 = 0;
-    int x1 = 1;
-
-    if (b == 1) {
-      return 1;
+        BigInteger p = BigInteger.ZERO;
+        BigInteger sm = BigInteger.ZERO;
+        for (int i = 0; i < n.length; i++) {
+            p = prod.divide(n[i]);
+            sm = sm.add(
+                    a[i].multiply(mulInv(p, n[i]))
+                            .multiply(p));
+        }
+        return sm.mod(prod);
     }
 
-    while (a > 1) {
-      int q = a / b;
-      int amb = a % b;
-      a = b;
-      b = amb;
-      int xqx = x1 - q * x0;
-      x1 = x0;
-      x0 = xqx;
+
+    private static BigInteger mulInv(BigInteger a, BigInteger b) {
+        BigInteger b0 = b;
+        BigInteger x0 = BigInteger.ZERO;
+        BigInteger x1 = BigInteger.ONE;
+
+        if (b.equals(BigInteger.ONE)) {
+            return BigInteger.ONE;
+        }
+
+        while (a.compareTo(BigInteger.ONE) == 1) {
+            BigInteger q = a.divide(b);
+            BigInteger amb = a.mod(b);
+            a = b;
+            b = amb;
+            BigInteger xqx = x1.subtract(q.multiply(x0));
+            x1 = x0;
+            x0 = xqx;
+        }
+
+        if (x1.compareTo(BigInteger.ZERO) == -1) {
+            x1 = x1.add(b0);
+        }
+
+        return x1;
     }
 
-    if (x1 < 0) {
-      x1 += b0;
+    public static void main(String[] args) {
+        BigInteger[] n = {BigInteger.valueOf(3),
+                BigInteger.valueOf(5),
+                BigInteger.valueOf(7)};
+        BigInteger[] a = {BigInteger.valueOf(2),
+                BigInteger.valueOf(3),
+                BigInteger.valueOf(2)};
+        System.out.println(chineseRemainder(n, a));
     }
-
-    return x1;
-  }
-
-  public static void main(String[] args) {
-    int[] n = {3, 5, 7};
-    int[] a = {2, 3, 2};
-    System.out.println(chineseRemainder(n, a));
-  }
 }
