@@ -1,6 +1,9 @@
 package com.univer.algorithm.attack;
 
+import ch.obermuhlner.math.big.BigDecimalMath;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.List;
 
 /**
@@ -17,9 +20,11 @@ public class Hastad {
                 .toArray(BigInteger[]::new);
 
         final BigInteger message = ChineseRT.chineseRemainder(nArray, cipherArray);
-        final long pow = Math.round(
-                Math.pow(message.intValue(), 1 / 3));
-        return pow;
+        final MathContext mathContext = new MathContext(100);
+        final BigDecimal root = BigDecimalMath
+            .root(new BigDecimal(message.toString()), BigDecimal.valueOf(3), mathContext);
+        System.out.println(root);
+        return 10L;
     }
 
 
