@@ -22,8 +22,6 @@ public class Dujel extends Wiener {
     final HashMap<BigInteger, Integer> mapTwo = new HashMap<>();
     final HashMap<BigInteger, Integer> mapThree = new HashMap<>();
 
-
-
     final BigInteger TWO = BigInteger.valueOf(2);
     BigInteger bOne = TWO.modPow(e.multiply(pairs.get(0).getValue()), N).modInverse(N);
     BigInteger bTwo = TWO.modPow(e.multiply(pairs.get(1).getValue()), N);
@@ -31,7 +29,7 @@ public class Dujel extends Wiener {
 
     BigInteger a = BigInteger.valueOf(2L).modPow(e, N);
 
-    for (int i = 0; i < 4 * range; ++i) {
+    for (int i = 0; i < range; ++i) {
       for (int j = 1; j < pairs.size(); ++j) {
         final BigInteger value = pairs.get(j).getValue().multiply(BigInteger.valueOf(i));
         final BigInteger e1 = a.modPow(value, N);
@@ -43,9 +41,13 @@ public class Dujel extends Wiener {
 
     for (int i = 0; i < 4 * range; ++i) {
       final BigInteger s = BigInteger.valueOf(i);
-      final BigInteger aOne = TWO.multiply(bOne.pow(i)).mod(N);
-      final BigInteger aTwo = TWO.multiply(bTwo.pow(i)).mod(N);
-      final BigInteger aThree = TWO.multiply(bThree.pow(i)).mod(N);
+//      final BigInteger aOne = TWO.multiply(bOne.pow(i)).mod(N);
+//      final BigInteger aTwo = TWO.multiply(bTwo.pow(i)).mod(N);
+//      final BigInteger aThree = TWO.multiply(bThree.pow(i)).mod(N);
+
+      final BigInteger aOne = TWO.multiply(bOne.modPow(BigInteger.valueOf(i), N)).mod(N);
+      final BigInteger aTwo = TWO.multiply(bTwo.modPow(BigInteger.valueOf(i), N)).mod(N);
+      final BigInteger aThree = TWO.multiply(bThree.modPow(BigInteger.valueOf(i), N)).mod(N);
 
       if (mapOne.containsKey(aOne)) {
         final BigInteger r = BigInteger.valueOf(mapOne.get(aOne));
@@ -83,9 +85,8 @@ public class Dujel extends Wiener {
             qOne.multiply(s)
         );
       }
+      System.out.println("I = :" + i);
     }
-
-
 
     return BigInteger.ONE;
   }

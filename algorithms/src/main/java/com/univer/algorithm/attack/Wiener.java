@@ -21,6 +21,7 @@ public class Wiener {
       BigInteger temp = new BigInteger("2");
       BigInteger secondTemp = temp.modPow(e.multiply(pair.getValue()), N);
       if (temp.equals(secondTemp)) {
+        System.out.println("i = " + pairs.indexOf(pair));
         return pair.getValue();
       }
     }

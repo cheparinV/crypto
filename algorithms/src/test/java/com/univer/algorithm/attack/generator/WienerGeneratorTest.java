@@ -31,7 +31,8 @@ public class WienerGeneratorTest {
         System.out.println(attack);
         Assert.assertEquals(map.get("d"), attack);
 
-        final BigInteger dujel = new Dujel().attack(map.get("N"), map.get("e"), 1000);
+        final BigInteger range = map.get("D");
+        final BigInteger dujel = new Dujel().attack(map.get("N"), map.get("e"), 10000);
 
         System.out.println("Hacked d dujel : ");
         System.out.println(dujel);
