@@ -51,7 +51,7 @@ public class WienerBenchTest {
   @Warmup(iterations = 0)
   @Measurement(iterations = 1)
   public void measureWiener(ExecutionPlan plan) {
-    final Map<String, BigInteger> map = plan.wienerGenerator.generateAll(256);
+    final Map<String, BigInteger> map = plan.wienerGenerator.generateAll(1024);
     final BigInteger N = map.get("N");
     final BigInteger e = map.get("e");
     System.out.println("N : " + N);
