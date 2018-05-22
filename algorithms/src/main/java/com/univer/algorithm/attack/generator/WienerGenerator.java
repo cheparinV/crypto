@@ -20,6 +20,7 @@ public class WienerGenerator {
   private Map<String, BigInteger> map;
 
   public Map<String, BigInteger> generateAll(Integer bitLength) {
+   // System.out.println("Bit legth : " + bitLength);
     final BigInteger p = BigInteger.probablePrime(bitLength, new Random());
     final BigInteger q = BigInteger.probablePrime(bitLength, new Random());
     final BigInteger N = p.multiply(q);

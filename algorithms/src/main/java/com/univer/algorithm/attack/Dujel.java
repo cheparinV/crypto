@@ -1,6 +1,10 @@
 package com.univer.algorithm.attack;
 
+import ch.obermuhlner.math.big.BigDecimalMath;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.util.Pair;
@@ -15,6 +19,7 @@ public class Dujel extends Wiener {
     final List<Pair<BigInteger, BigInteger>> convergents = this.convergents(
         this.contFraction(N, e));
 
+    //Collections.reverse(convergents);
     final Integer numberM = this.findNumberOfConvergents(convergents, N, e);
     final List<Pair<BigInteger, BigInteger>> pairs = convergents.subList(numberM, numberM + 4);
 
@@ -38,8 +43,9 @@ public class Dujel extends Wiener {
 //        setThree.add(e1);
       }
     }
-
-    for (int i = 0; i < 4 * range; ++i) {
+    boolean isReady = false;
+    final ArrayList<BigInteger> result = new ArrayList<>();
+    for (int i = 0; i < 4 * range && !isReady; ++i) {
       final BigInteger s = BigInteger.valueOf(i);
 //      final BigInteger aOne = TWO.multiply(bOne.pow(i)).mod(N);
 //      final BigInteger aTwo = TWO.multiply(bTwo.pow(i)).mod(N);
@@ -49,17 +55,6 @@ public class Dujel extends Wiener {
       final BigInteger aTwo = TWO.multiply(bTwo.modPow(BigInteger.valueOf(i), N)).mod(N);
       final BigInteger aThree = TWO.multiply(bThree.modPow(BigInteger.valueOf(i), N)).mod(N);
 
-      if (mapOne.containsKey(aOne)) {
-        final BigInteger r = BigInteger.valueOf(mapOne.get(aOne));
-        final BigInteger qOne = pairs.get(0).getValue();
-        final BigInteger qTwo = pairs.get(1).getValue();
-        System.out.println("R = " + r.toString());
-        System.out.println("S = " + s.toString());
-        return qTwo.multiply(r).add(
-            qOne.multiply(s)
-        );
-      }
-
       if (mapOne.containsKey(aTwo)) {
         final BigInteger r = BigInteger.valueOf(mapOne.get(aTwo));
         final BigInteger qOne = pairs.get(1).getValue();
@@ -68,9 +63,28 @@ public class Dujel extends Wiener {
         System.out.println("R = " + r.toString());
         System.out.println("S = " + s.toString());
 
-        return qTwo.multiply(r).subtract(
+        result.add(qTwo.multiply(r).subtract(
             qOne.multiply(s)
-        );
+        ));
+        isReady = true;
+//        return qTwo.multiply(r).subtract(
+//            qOne.multiply(s)
+//        );
+      }
+      if (mapOne.containsKey(aOne)) {
+        final BigInteger r = BigInteger.valueOf(mapOne.get(aOne));
+        final BigInteger qOne = pairs.get(0).getValue();
+        final BigInteger qTwo = pairs.get(1).getValue();
+        System.out.println("R = " + r.toString());
+        System.out.println("S = " + s.toString());
+
+        result.add(qTwo.multiply(r).add(
+            qOne.multiply(s)
+        ));
+        isReady = true;
+//        return qTwo.multiply(r).add(
+//            qOne.multiply(s)
+//        );
       }
 
       if (mapOne.containsKey(aThree)) {
@@ -80,12 +94,21 @@ public class Dujel extends Wiener {
 
         System.out.println("R = " + r.toString());
         System.out.println("S = " + s.toString());
-
-        return qTwo.multiply(r).add(
+        result.add(qTwo.multiply(r).add(
             qOne.multiply(s)
-        );
+        ));
+        isReady = true;
+//        return qTwo.multiply(r).add(
+//            qOne.multiply(s)
+//        );
       }
-      System.out.println("I = :" + i);
+    }
+    for (BigInteger bigInteger : result) {
+      final BigInteger two = BigInteger.valueOf(2);
+      final BigInteger bigInteger1 = two.modPow(e, N).modPow(bigInteger, N);
+      if (two.compareTo(bigInteger1) == 0) {
+        return bigInteger;
+      }
     }
 
     return BigInteger.ONE;
@@ -103,7 +126,10 @@ public class Dujel extends Wiener {
         continue;
       }
 
-      final BigInteger sqrtN = BigInteger.valueOf((long) Math.sqrt(N.longValue()));
+      final BigDecimal sqrt = BigDecimalMath
+          .sqrt(new BigDecimal(N.toString()), new MathContext(100));
+
+      final BigInteger sqrtN = sqrt.toBigInteger();
 
       final BigInteger var1 = nom.multiply(N).multiply(sqrtN);
       final BigInteger var2 = e.multiply(sqrtN).multiply(dem);
@@ -129,7 +155,6 @@ public class Dujel extends Wiener {
 
       if (right.compareTo(left) < 0) {
         final BigInteger subtract = right.subtract(left);
-
         return i - 2;
       }
     }

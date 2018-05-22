@@ -1,0 +1,1 @@
+JMH S 46 com.univer.algorithm.benchmark.WienerBenchTest S 78 com.univer.algorithm.benchmark.generated.WienerBenchTest_measureWiener_jmhTest S 13 measureWiener S 11 AverageTime E A 1 1 1 E I 1 0 E E I 1 1 E E I 1 1 E E E E E M 1 10 iterations 5 3 100 3 200 3 300 3 500 4 1000 U 12 MILLISECONDS E E 

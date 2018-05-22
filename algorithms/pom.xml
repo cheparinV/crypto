@@ -31,7 +31,15 @@
       <groupId>ch.obermuhlner</groupId>
       <artifactId>big-math</artifactId>
     </dependency>
-    
+
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+    </dependency>
   </dependencies>
 
 
