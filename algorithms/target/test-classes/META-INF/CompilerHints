@@ -3,5 +3,5 @@ dontinline,*.*_avgt_jmhStub
 dontinline,*.*_sample_jmhStub
 dontinline,*.*_ss_jmhStub
 dontinline,*.*_thrpt_jmhStub
-inline,com/univer/algorithm/benchmark/WienerBenchTest$ExecutionPlan.setUp
-inline,com/univer/algorithm/benchmark/WienerBenchTest.measureWiener
+inline,com/univer/algorithm/benchmark/HastadBenchTest$ExecutionPlan.setUp
+inline,com/univer/algorithm/benchmark/HastadBenchTest.measureWiener

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Hastad {
 
-    public long attack(List<RSAModel> list) {
+    public BigDecimal attack(List<RSAModel> list) {
         final BigInteger[] nArray = list.stream()
                 .map(RSAModel::getN)
                 .toArray(BigInteger[]::new);
@@ -22,9 +22,9 @@ public class Hastad {
         final BigInteger message = ChineseRT.chineseRemainder(nArray, cipherArray);
         final MathContext mathContext = new MathContext(100);
         final BigDecimal root = BigDecimalMath
-            .root(new BigDecimal(message.toString()), BigDecimal.valueOf(3), mathContext);
+            .root(new BigDecimal(message.toString()), new BigDecimal(list.get(0).getE().toString()), mathContext);
         System.out.println(root);
-        return 10L;
+        return root;
     }
 
 

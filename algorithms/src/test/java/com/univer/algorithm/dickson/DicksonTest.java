@@ -1,9 +1,11 @@
 package com.univer.algorithm.dickson;
 
 import com.univer.algorithm.QSieve;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -46,6 +48,18 @@ public class DicksonTest {
 
   @Test
   public void testDickson() throws Exception {
+    int size = 96;
+    for (int i = 1; i < 10; ++i) {
+      size += 4;
+      final BigInteger p = BigInteger.probablePrime(size, new Random());
+      final BigInteger q = BigInteger.probablePrime(size, new Random());
+      BigInteger n = p.multiply(q);
+      System.out.println(size);
+      System.out.println(p);
+      System.out.println(q);
+      System.out.println(n);
+      System.out.println("---------------------------------------------");
+    }
     Integer n = 50611;
     Integer range = 1000;
     final int sqrt = (int) Math.sqrt(n);
@@ -56,7 +70,7 @@ public class DicksonTest {
     final ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
     final ArrayList<List<Integer>> matrix = new ArrayList<>();
     //final int i1 = new Random().nextInt(sqrt);
-    for (int i = -range/2; i < range; ++i) {
+    for (int i = -range / 2; i < range; ++i) {
       final int b = sqrt + i;
       final int mod = b * b - n;
       final List<Integer> list = dickson.getBMap(mod, fBase);

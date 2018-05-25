@@ -13,8 +13,10 @@ import java.util.Random;
 public class HastadGenerator {
 
   public List<Map<String, BigInteger>> generateAll(int count, int bitLength) {
+    //final BigInteger bigInteger = BigInteger.probablePrime(count, new Random());
     final BigInteger bigInteger = BigInteger.valueOf(count);
-    final BigInteger maxE = BigInteger.probablePrime(bigInteger.bitLength(), new Random());
+    //final BigInteger maxE = BigInteger.probablePrime(bigInteger.bitLength(), new Random());
+    final BigInteger maxE = bigInteger;
     final List<Map<String, BigInteger>> maps = new ArrayList<>();
     for (int i = 0; i < maxE.intValue(); ++i) {
       final BigInteger p = BigInteger.probablePrime(bitLength, new Random());
