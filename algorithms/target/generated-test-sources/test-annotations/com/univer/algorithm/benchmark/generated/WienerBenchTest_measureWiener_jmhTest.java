@@ -77,44 +77,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.setUp();
-                            l_executionplan1_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -124,44 +87,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.setUp();
-                                l_executionplan1_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                    if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
@@ -170,6 +96,27 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             }
 
             if (control.isLastIteration()) {
+                if (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
+                    try {
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (l_executionplan1_G.readyTrial) {
+                            l_executionplan1_G.readyTrial = false;
+                        }
+                    } catch (Throwable t) {
+                        control.isFailing = true;
+                        throw t;
+                    } finally {
+                        WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.set(l_executionplan1_G, 0);
+                    }
+                } else {
+                    long l_executionplan1_G_backoff = 1;
+                    while (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.get(l_executionplan1_G) == 1) {
+                        TimeUnit.MILLISECONDS.sleep(l_executionplan1_G_backoff);
+                        l_executionplan1_G_backoff = Math.max(1024, l_executionplan1_G_backoff * 2);
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (Thread.interrupted()) throw new InterruptedException();
+                    }
+                }
                 synchronized(this.getClass()) {
                     f_executionplan1_G = null;
                 }
@@ -195,46 +142,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
         long realTime = 0;
         result.startTime = System.nanoTime();
         do {
-            if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.setUp();
-                        l_executionplan1_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-            realTime += (System.nanoTime() - rt);
-            if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
             operations++;
         } while(!control.isDone);
         result.stopTime = System.nanoTime();
@@ -261,44 +169,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.setUp();
-                            l_executionplan1_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -308,44 +179,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.setUp();
-                                l_executionplan1_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                    if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
@@ -354,6 +188,27 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             }
 
             if (control.isLastIteration()) {
+                if (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
+                    try {
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (l_executionplan1_G.readyTrial) {
+                            l_executionplan1_G.readyTrial = false;
+                        }
+                    } catch (Throwable t) {
+                        control.isFailing = true;
+                        throw t;
+                    } finally {
+                        WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.set(l_executionplan1_G, 0);
+                    }
+                } else {
+                    long l_executionplan1_G_backoff = 1;
+                    while (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.get(l_executionplan1_G) == 1) {
+                        TimeUnit.MILLISECONDS.sleep(l_executionplan1_G_backoff);
+                        l_executionplan1_G_backoff = Math.max(1024, l_executionplan1_G_backoff * 2);
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (Thread.interrupted()) throw new InterruptedException();
+                    }
+                }
                 synchronized(this.getClass()) {
                     f_executionplan1_G = null;
                 }
@@ -379,46 +234,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
         long realTime = 0;
         result.startTime = System.nanoTime();
         do {
-            if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.setUp();
-                        l_executionplan1_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-            realTime += (System.nanoTime() - rt);
-            if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
             operations++;
         } while(!control.isDone);
         result.stopTime = System.nanoTime();
@@ -445,44 +261,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
 
             control.announceWarmupReady();
             while (control.warmupShouldWait) {
-                if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (!l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.setUp();
-                            l_executionplan1_G.readyInvocation = true;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                    try {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (l_executionplan1_G.readyInvocation) {
-                            l_executionplan1_G.readyInvocation = false;
-                        }
-                    } catch (Throwable t) {
-                        control.isFailing = true;
-                        throw t;
-                    } finally {
-                        WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                    }
-                } else {
-                    while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                        if (control.isFailing) throw new FailureAssistException();
-                        if (Thread.interrupted()) throw new InterruptedException();
-                    }
-                }
                 res.allOps++;
             }
 
@@ -496,44 +275,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             control.announceWarmdownReady();
             try {
                 while (control.warmdownShouldWait) {
-                    if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (!l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.setUp();
-                                l_executionplan1_G.readyInvocation = true;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-                    if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                        try {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (l_executionplan1_G.readyInvocation) {
-                                l_executionplan1_G.readyInvocation = false;
-                            }
-                        } catch (Throwable t) {
-                            control.isFailing = true;
-                            throw t;
-                        } finally {
-                            WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                        }
-                    } else {
-                        while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                            if (control.isFailing) throw new FailureAssistException();
-                            if (Thread.interrupted()) throw new InterruptedException();
-                        }
-                    }
                     res.allOps++;
                 }
                 control.preTearDown();
@@ -542,6 +284,27 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             }
 
             if (control.isLastIteration()) {
+                if (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
+                    try {
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (l_executionplan1_G.readyTrial) {
+                            l_executionplan1_G.readyTrial = false;
+                        }
+                    } catch (Throwable t) {
+                        control.isFailing = true;
+                        throw t;
+                    } finally {
+                        WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.set(l_executionplan1_G, 0);
+                    }
+                } else {
+                    long l_executionplan1_G_backoff = 1;
+                    while (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.get(l_executionplan1_G) == 1) {
+                        TimeUnit.MILLISECONDS.sleep(l_executionplan1_G_backoff);
+                        l_executionplan1_G_backoff = Math.max(1024, l_executionplan1_G_backoff * 2);
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (Thread.interrupted()) throw new InterruptedException();
+                    }
+                }
                 synchronized(this.getClass()) {
                     f_executionplan1_G = null;
                 }
@@ -567,26 +330,6 @@ public final class WienerBenchTest_measureWiener_jmhTest {
         long time = 0;
         int currentStride = 0;
         do {
-            if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.setUp();
-                        l_executionplan1_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             rnd = (rnd * 1664525 + 1013904223);
             boolean sample = (rnd & rndMask) == 0;
             if (sample) {
@@ -602,25 +345,6 @@ public final class WienerBenchTest_measureWiener_jmhTest {
                     buffer.half();
                     currentStride = 0;
                     rndMask = (rndMask << 1) + 1;
-                }
-            }
-            realTime += (System.nanoTime() - rt);
-            if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
                 }
             }
             operations++;
@@ -653,6 +377,27 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             control.preTearDown();
 
             if (control.isLastIteration()) {
+                if (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
+                    try {
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (l_executionplan1_G.readyTrial) {
+                            l_executionplan1_G.readyTrial = false;
+                        }
+                    } catch (Throwable t) {
+                        control.isFailing = true;
+                        throw t;
+                    } finally {
+                        WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.set(l_executionplan1_G, 0);
+                    }
+                } else {
+                    long l_executionplan1_G_backoff = 1;
+                    while (WienerBenchTest_ExecutionPlan_jmhType.tearTrialMutexUpdater.get(l_executionplan1_G) == 1) {
+                        TimeUnit.MILLISECONDS.sleep(l_executionplan1_G_backoff);
+                        l_executionplan1_G_backoff = Math.max(1024, l_executionplan1_G_backoff * 2);
+                        if (control.isFailing) throw new FailureAssistException();
+                        if (Thread.interrupted()) throw new InterruptedException();
+                    }
+                }
                 synchronized(this.getClass()) {
                     f_executionplan1_G = null;
                 }
@@ -673,46 +418,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
         result.startTime = System.nanoTime();
         for (int b = 0; b < batchSize; b++) {
             if (control.volatileSpoiler) return;
-            if (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (!l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.setUp();
-                        l_executionplan1_G.readyInvocation = true;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.setupInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
-            long rt = System.nanoTime();
             l_wienerbenchtest0_0.measureWiener(l_executionplan1_G);
-            realTime += (System.nanoTime() - rt);
-            if (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.compareAndSet(l_executionplan1_G, 0, 1)) {
-                try {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (l_executionplan1_G.readyInvocation) {
-                        l_executionplan1_G.readyInvocation = false;
-                    }
-                } catch (Throwable t) {
-                    control.isFailing = true;
-                    throw t;
-                } finally {
-                    WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.set(l_executionplan1_G, 0);
-                }
-            } else {
-                while (WienerBenchTest_ExecutionPlan_jmhType.tearInvocationMutexUpdater.get(l_executionplan1_G) == 1) {
-                    if (control.isFailing) throw new FailureAssistException();
-                    if (Thread.interrupted()) throw new InterruptedException();
-                }
-            }
         }
         result.stopTime = System.nanoTime();
         result.realTime = realTime;
@@ -738,6 +444,7 @@ public final class WienerBenchTest_measureWiener_jmhTest {
             f = com.univer.algorithm.benchmark.WienerBenchTest.ExecutionPlan.class.getDeclaredField("iterations");
             f.setAccessible(true);
             f.set(val, Integer.valueOf(control.getParam("iterations")));
+            val.setUp();
             val.readyTrial = true;
             f_executionplan1_G = val;
             } catch (Throwable t) {

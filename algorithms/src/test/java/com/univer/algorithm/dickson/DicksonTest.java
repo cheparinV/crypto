@@ -55,6 +55,7 @@ public class DicksonTest {
       final BigInteger q = BigInteger.probablePrime(size, new Random());
       BigInteger n = p.multiply(q);
       System.out.println(size);
+      System.out.println(n.bitLength());
       System.out.println(p);
       System.out.println(q);
       System.out.println(n);

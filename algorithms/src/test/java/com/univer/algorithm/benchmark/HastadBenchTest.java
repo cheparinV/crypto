@@ -30,14 +30,22 @@ public class HastadBenchTest {
   @State(Scope.Benchmark)
   public static class ExecutionPlan {
 
-    @Param({"100", "200", "300", "500", "1000"})
+    @Param({"1009"})
     public int iterations;
+
+    public List<Map<String, BigInteger>> maps;
 
     public HastadGenerator hastadGenerator;
 
-    @Setup(Level.Invocation)
+    @Setup(Level.Trial)
     public void setUp() {
       hastadGenerator = new HastadGenerator();
+      maps = hastadGenerator.generateAll(iterations, 256);
+      for (Map<String, BigInteger> map : maps) {
+        for (String s : map.keySet()) {
+          System.out.println(s + " : " + map.get(s));
+        }
+      }
     }
   }
 
@@ -48,7 +56,7 @@ public class HastadBenchTest {
   @Warmup(iterations = 0)
   @Measurement(iterations = 1)
   public void measureWiener(ExecutionPlan plan) {
-    final List<Map<String, BigInteger>> maps = plan.hastadGenerator.generateAll(401, 256);
+    final List<Map<String, BigInteger>> maps = plan.maps;
 
     BigInteger message = new BigInteger("1024");
     final ArrayList<RSAModel> models = new ArrayList<>();

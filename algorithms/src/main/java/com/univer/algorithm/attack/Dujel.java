@@ -7,6 +7,8 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javafx.util.Pair;
 
 /**
@@ -23,7 +25,7 @@ public class Dujel extends Wiener {
     final Integer numberM = this.findNumberOfConvergents(convergents, N, e);
     final List<Pair<BigInteger, BigInteger>> pairs = convergents.subList(numberM, numberM + 4);
 
-    final HashMap<BigInteger, Integer> mapOne = new HashMap<>();
+    final Map<BigInteger, Integer> mapOne = new ConcurrentHashMap<>();
     final HashMap<BigInteger, Integer> mapTwo = new HashMap<>();
     final HashMap<BigInteger, Integer> mapThree = new HashMap<>();
 
@@ -34,8 +36,16 @@ public class Dujel extends Wiener {
 
     BigInteger a = BigInteger.valueOf(2L).modPow(e, N);
 
-    for (int i = 0; i < range; ++i) {
-      for (int j = 1; j < pairs.size(); ++j) {
+//    pairs.parallelStream().forEach(pair -> {
+//          for (int i = 0; i < range; ++i) {
+//            final BigInteger value = pair.getValue().multiply(BigInteger.valueOf(i));
+//            mapOne.put(a.modPow(value, N), i);
+//          }
+//        }
+//    );
+
+    for (int i = 0; i <= 4 * range; ++i) {
+      for (int j = 0; j < pairs.size(); ++j) {
         final BigInteger value = pairs.get(j).getValue().multiply(BigInteger.valueOf(i));
         final BigInteger e1 = a.modPow(value, N);
         mapOne.put(e1, i);
@@ -43,9 +53,77 @@ public class Dujel extends Wiener {
 //        setThree.add(e1);
       }
     }
-    boolean isReady = false;
+
+    final boolean[] isReady = {false};
     final ArrayList<BigInteger> result = new ArrayList<>();
-    for (int i = 0; i < 4 * range && !isReady; ++i) {
+    final int[] array = {0, 1, 2, 3};
+//    IntStream.of(array)
+//        //.unordered()
+//        .parallel()
+//        .forEach(j -> {
+//          final int j1 = j * range;
+//          System.out.println(j);
+//          for (int i = j1; i < j1 + range && !isReady[0]; ++i) {
+//            final BigInteger s = BigInteger.valueOf(i);
+//            final BigInteger aOne = TWO.multiply(bOne.modPow(BigInteger.valueOf(i), N)).mod(N);
+//            final BigInteger aTwo = TWO.multiply(bTwo.modPow(BigInteger.valueOf(i), N)).mod(N);
+//            final BigInteger aThree = TWO.multiply(bThree.modPow(BigInteger.valueOf(i), N)).mod(N);
+//
+//            if (mapOne.containsKey(aTwo)) {
+//              final BigInteger r = BigInteger.valueOf(mapOne.get(aTwo));
+//              final BigInteger qOne = pairs.get(1).getValue();
+//              final BigInteger qTwo = pairs.get(2).getValue();
+//
+//              System.out.println("R = " + r.toString());
+//              System.out.println("S = " + s.toString());
+//
+//              result.add(qTwo.multiply(r).subtract(
+//                  qOne.multiply(s)
+//              ));
+//              isReady[0] = true;
+////        return qTwo.multiply(r).subtract(
+////            qOne.multiply(s)
+////        );
+//            }
+//            if (mapOne.containsKey(aOne)) {
+//              final BigInteger r = BigInteger.valueOf(mapOne.get(aOne));
+//              final BigInteger qOne = pairs.get(0).getValue();
+//              final BigInteger qTwo = pairs.get(1).getValue();
+//              System.out.println("R = " + r.toString());
+//              System.out.println("S = " + s.toString());
+//
+//              result.add(qTwo.multiply(r).add(
+//                  qOne.multiply(s)
+//              ));
+//              isReady[0] = true;
+////        return qTwo.multiply(r).add(
+////            qOne.multiply(s)
+////        );
+//            }
+//
+//            if (mapOne.containsKey(aThree)) {
+//              final BigInteger r = BigInteger.valueOf(mapOne.get(aThree));
+//              final BigInteger qOne = pairs.get(2).getValue();
+//              final BigInteger qTwo = pairs.get(3).getValue();
+//
+//              System.out.println("R = " + r.toString());
+//              System.out.println("S = " + s.toString());
+//              result.add(qTwo.multiply(r).add(
+//                  qOne.multiply(s)
+//              ));
+//              isReady[0] = true;
+////        return qTwo.multiply(r).add(
+////            qOne.multiply(s)
+////        );
+//            }
+//            if (isReady[0]) {
+//              break;
+//            }
+//          }
+//        }
+//    );
+
+    for (int i = 0; i < 4 * range && !isReady[0]; ++i) {
       final BigInteger s = BigInteger.valueOf(i);
 //      final BigInteger aOne = TWO.multiply(bOne.pow(i)).mod(N);
 //      final BigInteger aTwo = TWO.multiply(bTwo.pow(i)).mod(N);
@@ -66,9 +144,9 @@ public class Dujel extends Wiener {
         result.add(qTwo.multiply(r).subtract(
             qOne.multiply(s)
         ));
-        isReady = true;
+        isReady[0] = true;
 //        return qTwo.multiply(r).subtract(
-//            qOne.multiply(s)
+//            qOne.multiply(s) 91088271337269846906430910304911322787
 //        );
       }
       if (mapOne.containsKey(aOne)) {
@@ -81,7 +159,7 @@ public class Dujel extends Wiener {
         result.add(qTwo.multiply(r).add(
             qOne.multiply(s)
         ));
-        isReady = true;
+        isReady[0] = true;
 //        return qTwo.multiply(r).add(
 //            qOne.multiply(s)
 //        );
@@ -97,7 +175,7 @@ public class Dujel extends Wiener {
         result.add(qTwo.multiply(r).add(
             qOne.multiply(s)
         ));
-        isReady = true;
+        isReady[0] = true;
 //        return qTwo.multiply(r).add(
 //            qOne.multiply(s)
 //        );
@@ -111,7 +189,7 @@ public class Dujel extends Wiener {
       }
     }
 
-    return BigInteger.ONE;
+    return BigInteger.ONE;//36958215659
   }
 
   private Integer findNumberOfConvergents(List<Pair<BigInteger, BigInteger>> convergents,

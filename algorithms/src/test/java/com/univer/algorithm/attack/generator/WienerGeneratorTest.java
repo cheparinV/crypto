@@ -47,6 +47,18 @@ public class WienerGeneratorTest {
      */
     @Test
     public void testGenerateD() throws Exception {
+      int bitLength = 64;
+      for (int i = 0; i < 100; ++i) {
+        if (i % 10 == 0) {
+          bitLength *= 2;
+        }
+        System.out.println(bitLength + " | " + i);
+        final Map<String, BigInteger> map = new WienerGenerator().generateAll(bitLength);
+        for (String s : map.keySet()) {
+          System.out.println(s + " : " + map.get(s));
+        }
+        System.out.println("---------------------------");
+      }
     }
 
 }

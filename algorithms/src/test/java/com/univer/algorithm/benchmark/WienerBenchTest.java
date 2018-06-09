@@ -3,6 +3,8 @@ package com.univer.algorithm.benchmark;
 import com.univer.algorithm.attack.Wiener;
 import com.univer.algorithm.attack.generator.WienerGenerator;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -17,10 +19,6 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author Vladislav Cheparin (vladislav.cheparin.gdc@ts.fujitsu.com)
@@ -33,25 +31,37 @@ public class WienerBenchTest {
   @State(Scope.Benchmark)
   public static class ExecutionPlan {
 
-    @Param({"100", "200", "300", "500", "1000"})
+    //@Param({"32", "48", "64", "80", "96", "112"})
+    @Param({"896"})
     public int iterations;
+
+    public static int number = 0;
+    List<Map<String, BigInteger>> list;
 
     public WienerGenerator wienerGenerator;
 
-    @Setup(Level.Invocation)
+    @Setup(Level.Trial)
     public void setUp() {
       wienerGenerator = new WienerGenerator();
+      list = new ArrayList<>();
+      for (int i = 0; i < 10; ++i) {
+        final Map<String, BigInteger> map = wienerGenerator.generateAll(iterations);
+        list.add(map);
+        for (String s : map.keySet()) {
+          System.out.println(s + " : " + map.get(s));
+        }
+      }
     }
   }
 
   @Benchmark
   @BenchmarkMode(Mode.AverageTime)
   @OutputTimeUnit(TimeUnit.MILLISECONDS)
-  @Fork(value = 1)
-  @Warmup(iterations = 0)
-  @Measurement(iterations = 1)
+  @Fork(value = 2, jvmArgs = {"-Xmx4g", "-Xms2g"})
+  @Warmup(iterations = 1)
+  @Measurement(iterations = 10)
   public void measureWiener(ExecutionPlan plan) {
-    final Map<String, BigInteger> map = plan.wienerGenerator.generateAll(4096);
+    final Map<String, BigInteger> map = plan.list.get(ExecutionPlan.number);
     final BigInteger N = map.get("N");
     final BigInteger e = map.get("e");
     System.out.println("N : " + N);
@@ -63,26 +73,21 @@ public class WienerBenchTest {
     System.out.println("Attack : " + attack);
     System.out.println("Cypher : " + bigInteger);
     System.out.println("Encrypt : " + bigInteger1);
-    System.out.println("Success : " + BigInteger.valueOf(2).equals(bigInteger1));
+    final boolean equals = BigInteger.valueOf(2).equals(bigInteger1);
+    System.out.println("Success : " + equals);
+
+    if (DujelBenchTest.ExecutionPlan.number >= 9) {
+      DujelBenchTest.ExecutionPlan.number = 0;
+    } else {
+      DujelBenchTest.ExecutionPlan.number++;
+    }
+    //ExecutionPlan.number = 0;
+
+    System.out.println(DujelBenchTest.ExecutionPlan.number);
+    System.out.println("----------------------");
 
     //final BigInteger attack = new Wiener().attack(map.get("N"), map.get("e"), "2154215");
   }
 
-  public static void main(String[] args) {
-    final Options build = new OptionsBuilder().include(WienerBenchTest.class.getSimpleName())
-        .warmupIterations(1)
-        .measurementIterations(1)
-        .build();
-
-    for (int i = 0; i < 5; ++i) {
-      WienerBenchTest.length *= 2;
-      System.out.println("Bit length : " + WienerBenchTest.length);
-      try {
-        new Runner(build).run();
-      } catch (RunnerException e) {
-        throw new IllegalStateException(e);
-      }
-    }
-  }
 
 }

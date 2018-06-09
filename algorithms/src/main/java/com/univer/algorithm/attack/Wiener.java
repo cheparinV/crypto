@@ -17,6 +17,21 @@ public class Wiener {
     final List<BigInteger> bigIntegers = this.contFraction(N, e);
 
     final List<Pair<BigInteger, BigInteger>> pairs = this.convergents(bigIntegers);
+
+
+//    final Pair<BigInteger, BigInteger> result  = pairs.parallelStream()
+//        .filter(pair -> {
+//              BigInteger temp = new BigInteger("2");
+//              BigInteger secondTemp = temp.modPow(e.multiply(pair.getValue()), N);
+//              if (temp.equals(secondTemp)) {
+//                //System.out.println("i = " + pairs.indexOf(pair));
+//                return true;
+//              }
+//              return false;
+//            }
+//        ).findFirst()
+//        .orElse(new Pair<>(BigInteger.ZERO, BigInteger.ZERO));
+    final Pair<BigInteger, BigInteger> result = new Pair<>(BigInteger.ZERO, BigInteger.ZERO);
     for (Pair<BigInteger, BigInteger> pair : pairs) {
       BigInteger temp = new BigInteger("2");
       BigInteger secondTemp = temp.modPow(e.multiply(pair.getValue()), N);
@@ -26,7 +41,7 @@ public class Wiener {
       }
     }
 
-    return BigInteger.ZERO;
+    return result.getValue();
   }
 
 

@@ -16,9 +16,9 @@ public class DujelTest {
    */
   @Test
   public void testAttack() throws Exception {
-    final BigInteger e = new BigInteger("4603830998027");
-    final BigInteger n = new BigInteger("7978886869909");
-    final BigInteger attack = new Dujel().attack(n, e, 1000);
+    final BigInteger n = new BigInteger("269245414847717183025961990356015799621");
+    final BigInteger e = new BigInteger("61863362397335519399661485583145626849");
+    final BigInteger attack = new Dujel().attack(n, e, 100);
     System.out.println(attack);
 
     final BigInteger x = BigInteger.valueOf(2).modPow(
